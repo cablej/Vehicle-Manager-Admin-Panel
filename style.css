@@ -1,0 +1,73 @@
+body {
+	background-color: white;
+	z-index: 1;
+	min-height: 100%;
+	margin:0;
+	padding:15px;
+}
+
+.chart td, .chart th {
+	padding: 5px;
+}
+
+.chart tr:nth-child(even) {background: #CCC}
+.chart tr:nth-child(odd) {background: #FFF}
+
+#logo {
+	height:100px;
+}
+
+.header img {
+  float: left;
+}
+
+.header h1 {
+  position: relative;
+  top: 25px;
+  left: 10px;
+  font-size:40px;
+}
+
+.header {
+	
+  margin-bottom:75px;
+}
+
+
+div.menu
+{
+    /*width:500px;margin:0 auto;*//*Uncomment this line to make the menu center-aligned.*/
+    text-align:center;
+    background-image: url(http://www.menucool.com/horizontal/skins/2/bg1.gif);
+    border:1px solid black;
+    font-size:0;
+    margin-bottom:20px;
+}
+
+div.menu a
+{
+    display: inline-block;
+    padding: 0 20px;
+    background-image: url(http://www.menucool.com/horizontal/skins/2/bg.gif);
+    color:White;
+    text-decoration:none;
+    font: bold 12px Arial;
+    line-height: 32px;
+}
+
+div.menu a:hover, div.menu a.current
+{
+    background-position:0 -60px;
+}
+
+div.menu a.dummy
+{
+    width:2px;
+    padding:0 0;
+}
+
+
+#calendar {
+	max-width: 900px;
+	margin: 0 auto;
+}
