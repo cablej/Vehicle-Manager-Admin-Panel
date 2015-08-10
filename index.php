@@ -20,14 +20,14 @@ $( document ).ready(function() {
 		var json = JSON.parse(data)
 	
 		if(json.length == 0) {
-			$("#requests").append("<p>There aren't any requests.</p>");
+			$("#requests").append("<tr><td colspan='8'>There aren't any requests.</td></tr>");
 		}
 	
 		for(request_index in json) {
 	
 			var request = json[request_index]
 		
-			$("#requests").append("<tr class='request'><td>" + request["user"] + "</td><td>" + request["email"] + "</td><td>" + request["vehicleName"] + "</td><td>" + formatDate(request["startDateTime"]) + "</td><td>" + formatDate(request["endDateTime"]) + "</td><td>" + formatDate(request["timestamp"]) + "</td><td><a href='#'>Approve</a></td><td><a href='#'>Deny</a></td></tr>")
+			$("#requests").append("<tr class='request' id='request-" + request["timestamp"] + "'><td>" + request["user"] + "</td><td>" + request["email"] + "</td><td>" + request["vehicleName"] + "</td><td>" + formatDate(request["startDateTime"]) + "</td><td>" + formatDate(request["endDateTime"]) + "</td><td>" + formatDate(request["timestamp"]) + "</td><td><a style='cursor:pointer' onclick=\x22processRequest('" + request["timestamp"] + "', '" + request["user"] + "', '" + request["vehicleName"] + "', 'approve')\x22>Approve</a></td><td><a style='cursor:pointer' onclick=\x22processRequest('" + request["timestamp"] + "', '" + request["user"] + "', '" + request["vehicleName"] + "', 'deny')\x22>Deny</a></td></tr>")
 		}
 		
 		pageLoaded()
@@ -48,6 +48,8 @@ $( document ).ready(function() {
 <div id="content">
 
 <p id="error-field"></p>
+
+<p id="processRequest-status"></p>
 
 <table id="requests" class="chart" border="1">
 

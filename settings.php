@@ -15,23 +15,7 @@ $( document ).ready(function() {
 	
 	$("#content").append("Logged in as " + school + ". <a style='cursor:pointer' onclick='logout()'>Log out.</a>")
 	
-	
-	/*$.post(REQUEST_URL, {action : "GetRequests", key : getCookie("key")}, function( data ) {
-		var json = JSON.parse(data)
-	
-		if(json.length == 0) {
-			$("#requests").append("<p>There aren't any requests.</p>");
-		}
-	
-		for(request_index in json) {
-	
-			var request = json[request_index]
-		
-			$("#requests").append("<tr class='request'><td>" + request["user"] + "</td><td>" + request["email"] + "</td><td>" + request["vehicleName"] + "</td><td>" + formatDate(request["startDateTime"]) + "</td><td>" + formatDate(request["endDateTime"]) + "</td><td>" + formatDate(request["timestamp"]) + "</td><td><a href='#'>Approve</a></td><td><a href='#'>Deny</a></td></tr>")
-		}
-		
-		pageLoaded()
-	});*/
+	pageLoaded()
 	
 });
 
@@ -44,6 +28,32 @@ $( document ).ready(function() {
 <body>
 
 <?php echo file_get_contents("template_body.html") ?>
+
+<div id="content">
+
+<h3>Change password</h3>
+
+<p id="changePassword-status"></p>
+
+<input type="password" id="old-password" placeholder="Old password"></input><br><br>
+<input type="password" id="new-password" placeholder="New password"></input><br><br>
+<input type="password" id="confirm-password" placeholder="Confirm password"></input><br><br>
+
+<button style="cursor:pointer" onclick="changePassword($('#old-password').val(), $('#new-password').val(), $('#confirm-password').val())">Change password</button><br><br>
+
+
+<h3>Change email</h3>
+
+<p id="changeEmail-status"></p>
+
+<input type="password" id="password" placeholder="Password"></input><br><br>
+<input type="text" id="new-email" placeholder="New email"></input><br><br>
+<input type="text" id="confirm-email" placeholder="Confirm email"></input><br><br>
+
+<button style="cursor:pointer" onclick="changeEmail($('#password').val(), $('#new-email').val(), $('#confirm-email').val())">Change email</button><br><br>
+
+
+</div>
 
 </body>
 <?php echo file_get_contents("template_after.html") ?>
