@@ -6,7 +6,7 @@
 $( document ).ready(function() {
 	initializePage()
 	
-	$(".menu a:nth-child(4)").addClass("current")
+	$(".menu a:nth-child(5)").addClass("current")
 	
 	var school = getCookie("school")
 	var key = getCookie("key")
@@ -28,6 +28,8 @@ $( document ).ready(function() {
 <body>
 
 <?php echo file_get_contents("template_body.html") ?>
+
+<center>
 
 <div id="content">
 
@@ -54,6 +56,8 @@ $( document ).ready(function() {
 
 
 </div>
+
+</center>
 
 </body>
 <?php echo file_get_contents("template_after.html") ?>

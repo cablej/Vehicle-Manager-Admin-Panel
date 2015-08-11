@@ -30,8 +30,9 @@ $( document ).ready(function() {
 			$("#requests").append("<tr class='request' id='request-" + request["timestamp"] + "'><td>" + request["user"] + "</td><td>" + request["email"] + "</td><td>" + request["vehicleName"] + "</td><td>" + formatDate(request["startDateTime"]) + "</td><td>" + formatDate(request["endDateTime"]) + "</td><td>" + formatDate(request["timestamp"]) + "</td><td><a style='cursor:pointer' onclick=\x22processRequest('" + request["timestamp"] + "', '" + request["user"] + "', '" + request["vehicleName"] + "', 'approve')\x22>Approve</a></td><td><a style='cursor:pointer' onclick=\x22processRequest('" + request["timestamp"] + "', '" + request["user"] + "', '" + request["vehicleName"] + "', 'deny')\x22>Deny</a></td></tr>")
 		}
 		
-		pageLoaded()
 	});
+	
+	displayCalendar("requests")
 	
 });
 
@@ -45,7 +46,13 @@ $( document ).ready(function() {
 
 <?php echo file_get_contents("template_body.html") ?>
 
+<center>
+
 <div id="content">
+
+<div id="calendar">
+
+</div>
 
 <p id="error-field"></p>
 
@@ -58,6 +65,8 @@ $( document ).ready(function() {
 </table><br>
 
 </div>
+
+</center>
 
 </div>
 

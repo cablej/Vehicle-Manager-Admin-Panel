@@ -6,7 +6,7 @@
 $( document ).ready(function() {
 	initializePage()
 	
-	$(".menu a:nth-child(3)").addClass("current")
+	$(".menu a:nth-child(4)").addClass("current")
 	
 	var school = getCookie("school")
 	var key = getCookie("key")
@@ -51,6 +51,8 @@ $( document ).ready(function() {
 
 <?php echo file_get_contents("template_body.html") ?>
 
+<center>
+
 <div id="content">
 
 <p id='removeVehicle-status'></p>
@@ -65,7 +67,9 @@ $( document ).ready(function() {
 
 <input type="text" id="add-vehicle" placeholder="Vehicle name"></input><br><br><button style="cursor:pointer" onclick="addVehicle($('#add-vehicle').val())">Add Vehicle</button><br><br>
 
-</content>
+</div>
+
+</center>
 
 </body>
 <?php echo file_get_contents("template_after.html") ?>
