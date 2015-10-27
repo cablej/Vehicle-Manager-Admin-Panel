@@ -147,6 +147,116 @@ function addVehicle(vehicleName) {
 	});
 }
 
+function addKeySet(vehicleName, keySetName) {
+	$("#removeKeySet-status").text("Loading...")
+	$.post(REQUEST_URL, {action : "AddKeySet", key : getCookie("key"), vehicleName : vehicleName, keySetName: keySetName}, function( data ) {
+		var json = JSON.parse(data)
+		if(json.hasOwnProperty('error')) {
+			$("#removeKeySet-status").text(json["error"])
+			$("#removeKeySet-status").show("slow").delay(5000).fadeOut("slow");
+			return
+		}
+		
+		$("#removeKeySet-status").text("Successfully added the key set " + keySetName + ".")
+		$("#removeKeySet-status").fadeIn("slow").delay(5000).fadeOut("slow");
+		var vehicleNameID = vehicleName	
+		var keySetNameID = keySetName
+		vehicleNameID = vehicleNameID.replace(/\s+/g, '');
+		vehicleNameID = vehicleNameID.replace(/:/g,'');
+		keySetNameID = keySetNameID.replace(/\s+/g, '');
+		keySetNameID = keySetNameID.replace(/:/g,'');
+		$("#keySets").append("<tr class='keySet' id='keySet-" + vehicleNameID + "-" + keySetNameID + "'><td>" + vehicleName + "</td><td>" + keySetName + "</td><td><a style='cursor:pointer' onclick=\x22removeKeySet('" + vehicleName + "', '" + keySetName + "')\x22>Delete</a></td></tr>")
+	});
+}
+
+function removeKeySet(vehicleName, keySetName) {
+	if (!window.confirm("Are you sure you want to delete the key set '" + keySetName + "'? This action cannot be undone.")) {
+		return;
+	}
+	$("#removeKeySet-status").text("Loading...")
+	$.post(REQUEST_URL, {action : "RemoveKeySet", key : getCookie("key"), vehicleName : vehicleName, keySetName: keySetName}, function( data ) {
+		var json = JSON.parse(data)
+		if(json.hasOwnProperty('error')) {
+			$("#removeKeySet-status").text(json["error"])
+			$("#removeKeySet-status").fadeIn("slow").delay(5000).fadeOut("slow");
+			return
+		}
+		
+		$("#removeKeySet-status").text("Successfully removed the key set " + keySetName + ".")
+		$("#removeKeySet-status").fadeIn("slow").delay(5000).fadeOut("slow");
+		var vehicleNameID = vehicleName	
+		var keySetNameID = keySetName
+		vehicleNameID = vehicleNameID.replace(/\s+/g, '');
+		vehicleNameID = vehicleNameID.replace(/:/g,'');
+		keySetNameID = keySetNameID.replace(/\s+/g, '');
+		keySetNameID = keySetNameID.replace(/:/g,'');
+		$("#keySet-" + vehicleNameID + "-" + keySetNameID).remove();
+	});
+}
+
+function addGasCard(gasCardName) {
+	$("#removeGasCard-status").text("Loading...")
+	$.post(REQUEST_URL, {action : "AddGasCard", key : getCookie("key"), gasCardName : gasCardName}, function( data ) {
+		var json = JSON.parse(data)
+		if(json.hasOwnProperty('error')) {
+			$("#removeGasCard-status").text(json["error"])
+			$("#removeGasCard-status").show("slow").delay(5000).fadeOut("slow");
+			return
+		}
+		
+		$("#removeGasCard-status").text("Successfully added the gas card " + gasCardName + ".")
+		$("#removeGasCard-status").fadeIn("slow").delay(5000).fadeOut("slow");
+		var id = gasCardName
+		id = id.replace(/\s+/g, '');
+		id = id.replace(/:/g,'');
+		$("#gasCards").append("<tr class='vehicle' id='gasCard-" + id + "'><td>" + gasCardName + "</td><td><a style='cursor:pointer' onclick=\x22removeGasCard('" + gasCardName + "')\x22>Delete</a></td></tr>")
+	});
+}
+
+function removeGasCard(gasCardName) {
+	if (!window.confirm("Are you sure you want to delete the gas card '" + gasCardName + "'? This action cannot be undone.")) {
+		return;
+	}
+	$("#removeGasCard-status").text("Loading...")
+	$.post(REQUEST_URL, {action : "RemoveGasCard", key : getCookie("key"), gasCardName : gasCardName}, function( data ) {
+		var json = JSON.parse(data)
+		if(json.hasOwnProperty('error')) {
+			$("#removeGasCard-status").text(json["error"])
+			$("#removeGasCard-status").fadeIn("slow").delay(5000).fadeOut("slow");
+			return
+		}
+		
+		$("#removeGasCard-status").text("Successfully removed the vehicle " + gasCardName + ".")
+		$("#removeGasCard-status").fadeIn("slow").delay(5000).fadeOut("slow");
+		var id = gasCardName
+		id = id.replace(/\s+/g, '');
+		id = id.replace(/:/g,'');
+		$("#gasCard-" + id).remove();
+	});
+}
+
+function getKeySets() {
+	$.post(REQUEST_URL, {action : "GetKeySets", school : getCookie("school")}, function( data ) {
+		var json = JSON.parse(data)
+		if(json.hasOwnProperty('error')) {
+			console.log("could not load key sets.")
+			return
+		}
+		keySets = json
+	});
+}
+
+function getGasCards() {
+	$.post(REQUEST_URL, {action : "GetGasCards", school : getCookie("school")}, function( data ) {
+		var json = JSON.parse(data)
+		if(json.hasOwnProperty('error')) {
+			console.log("could not load gas cards.")
+			return
+		}
+		gasCards = json
+	});
+}
+
 function addReservation(vehicleName, owner, startDate, endDate) {
 	
 	var startDateUnix = Date.parse(startDate)/1000;
@@ -168,6 +278,18 @@ function addReservation(vehicleName, owner, startDate, endDate) {
 		id = id.replace(/\s+/g, '');
 		id = id.replace(/:/g,'');
 		$("#reservations").append("<tr class='reservation' id='reservation-" + id + "'><td>" + owner + "</td><td>" + vehicleName + "</td><td>" + formatDate(startDateUnix) + "</td><td>" + formatDate(endDateUnix) + "</td><td><a style='cursor:pointer' onclick=\x22removeReservation('" + vehicleName + "', '" + owner + "', '" + startDateUnix + "', '" + endDateUnix + "')\x22>Delete</a></td></tr>")
+	});
+}
+
+function updateReservation(reservation) {
+	
+	$.post(REQUEST_URL, {action : "UpdateReservation", key : getCookie("key"), originalVehicleName : reservation["originalVehicleName"], originalOwner : reservation["originalOwner"], originalStartDate : reservation["originalStartDate"], originalEndDate : reservation["originalEndDate"], newVehicleName : reservation["newVehicleName"], newOwner : reservation["newOwner"], newStartDate : reservation["newStartDate"], newEndDate : reservation["newEndDate"], keySet : reservation["keySet"], gasCard : reservation["gasCard"]}, function( data ) {
+		var json = JSON.parse(data)
+		if(json.hasOwnProperty('error')) {
+			console.log("could not update reservation: " + json["error"])
+			return
+		}
+		
 	});
 }
 
@@ -244,24 +366,27 @@ function displayCalendar(type) {
 	
 			var reservation = json[reservation_index]
 			
-			var event = {title: reservation["vehicleName"] + " (" + reservation["owner"] + ")", start:formateDateISO(reservation["startDateTime"]), end:formateDateISO(reservation["endDateTime"]), description: reservation["vehicleName"] + " (" + reservation["owner"] + ") " + formatDate(reservation["startDateTime"]) + " - " + formatDate(reservation["endDateTime"])}
-			
-			events.push(event)
-			
-			if(type == "requests") continue;
 			
 			var id = reservation["vehicleName"] + reservation["owner"] + reservation["startDateTime"] + reservation["endDateTime"]
 			
 			id = id.replace(/\s+/g, '');
 			id = id.replace(/:/g,'');
+			
+			var event = {title: reservation["vehicleName"] + " (" + reservation["owner"] + ")", start:formateDateISO(reservation["startDateTime"]), end:formateDateISO(reservation["endDateTime"]), description: reservation["vehicleName"] + " (" + reservation["owner"] + ") " + formatDate(reservation["startDateTime"]) + " - " + formatDate(reservation["endDateTime"]), id: id}
+			
+			events.push(event)
+			
+			if(type == "requests") continue;
 		
 			var deleteSection = ""
+			var editSection = ""
 			
 			if(type == "reservations") {
-				deleteSection = "<td><a style='cursor:pointer' onclick=\x22removeReservation('" + reservation["vehicleName"] + "', '" + reservation["owner"] + "', '" + reservation["startDateTime"] + "', '" + reservation["endDateTime"] + "')\x22>Delete</a></td>"
+				deleteSection = "<td class='delete'><a style='cursor:pointer' onclick=\x22removeReservation('" + reservation["vehicleName"] + "', '" + reservation["owner"] + "', '" + reservation["startDateTime"] + "', '" + reservation["endDateTime"] + "')\x22>Delete</a></td>"
+				editSection = "<td class='edit'><a style='cursor:pointer' onclick=\x22beginEditing('reservation-" + id + "')\x22>Edit</a></td>"
 			}
 		
-			$("#reservations").append("<tr class='reservation' id='reservation-" + id + "'><td>" + reservation["owner"] + "</td><td>" + reservation["vehicleName"] + "</td><td>" + formatDate(reservation["startDateTime"]) + "</td><td>" + formatDate(reservation["endDateTime"]) + "</td>" + deleteSection + "</tr>")
+			$("#reservations").append("<tr class='reservation' name='reservation-" + id + "' id='reservation-" + id + "'><td class='owner'>" + reservation["owner"] + "</td><td class='vehicleName'>" + reservation["vehicleName"] + "</td><td class='startDate'>" + formatDate(reservation["startDateTime"]) + "</td><td class='endDate'>" + formatDate(reservation["endDateTime"]) + "</td><td class='keySet'>" + reservation["keySet"] + "</td><td class='gasCard'>" + reservation["gasCard"] + "</td>" + editSection + deleteSection + "</tr>")
 		}
 		
 		
@@ -278,16 +403,18 @@ function displayCalendar(type) {
 			eventLimit: true, // allow "more" link when too many events
 			events: events,
 			eventRender: function(event, element) {
-            element.qtip({
-                content: event.description,
-                position: {
-                    corner: {
-                        target: 'center',
-                        tooltip: 'bottomMiddle'
-                    }
-                }
-            });
-        }
+            	element.qtip({
+					content: event.description,
+					position: {
+						corner: {
+							target: 'center',
+							tooltip: 'bottomMiddle'
+						}
+                }});
+				var eventText = "<a style='color:white' href='#reservation-" + event.id + "'>" + element.find('span.fc-title').text() + "</a>";
+				element.find('span.fc-title').html(eventText);
+            
+       		}
 		});
 		
 		pageLoaded()
@@ -299,6 +426,73 @@ function displayCalendar(type) {
 Helper methods
 
 */
+
+function beginEditing(id) {
+	$("#" + id).find('td').each (function() {
+		var tdclass = $(this).attr('class')
+	  	if(tdclass == "edit") {
+	  		$(this).html("<a style='cursor:pointer' onclick=\x22endEditing('" + id + "')\x22>Save</a>")
+	  	} else if(tdclass != "delete") {
+	  		var text = $(this).html();
+	  		
+	  		inputID = tdclass + id
+	  		
+	  		if(tdclass == "gasCard" || tdclass == "keySet") {
+	  			var htmlToReplace = "<select style='width:100px'>"
+	  			var setToIterate = tdclass == "gasCard" ? gasCards : keySets;
+	  			for(var index in setToIterate) {
+	  				var object = setToIterate[index];
+	  				if(tdclass == "gasCard") htmlToReplace += "<option value='" + object["gasCardName"] + "'>" + object["gasCardName"] + "</option>"
+	  				else htmlToReplace += "<option value='" + object["vehicleName"] + " " + object["keySetName"] + "'>" + object["vehicleName"] + " " + object["keySetName"] + "</option>"
+	  			}
+	  			htmlToReplace += "</select>"
+	  			$(this).replaceWith('<td class="' + tdclass + '">' + htmlToReplace + '</td>');
+	  		} else {	  		
+				$(this).replaceWith('<td class="' + tdclass + '"><input type="hidden" value="' + text + '"></input><input id="' + inputID + '" style="width:100px" type="text" value="' + text + '"></input></td>');
+			
+				if(tdclass == "startDate" || tdclass == "endDate") {
+					console.log(text);
+					$('#' + inputID).datetimepicker({step:60, defaultDate:new Date(text)});
+				}
+	  		}
+	  			
+	  	}
+	});    
+}
+
+function endEditing(id) {
+	var reservationData = {}
+	$("#" + id).find('td').each (function() {
+		var tdclass = $(this).attr('class')
+	  	if(tdclass == "edit") {
+	  		$(this).html("<a style='cursor:pointer' onclick=\x22beginEditing('" + id + "')\x22>Edit</a>")
+	  	} else if(tdclass != "delete") {
+	  		
+	  		inputID = tdclass + id
+	  		
+	  		if(tdclass == "gasCard" || tdclass == "keySet") {
+	  			var text = $(this).find('option:selected').text()
+	  			var value = $(this).find('select').val()
+	  			$(this).replaceWith('<td>' + text + '</td>');
+				reservationData[tdclass] = value;
+	  		} else {
+	  			var value = $(this).find('input[type=text]').val();
+	  			var originalValue = $(this).find('input[type=hidden]').val();
+	  			if(tdclass == "startDate" || tdclass == "endDate") {
+	  				reservationData["new" + tdclass.capitalizeFirstLetter()] = Date.parse(value)/1000;
+	  				reservationData["original" + tdclass.capitalizeFirstLetter()] = Date.parse(originalValue)/1000;
+	  			} 
+	  			else  {
+	  				reservationData["new" + tdclass.capitalizeFirstLetter()] = value;
+	  				reservationData["original" + tdclass.capitalizeFirstLetter()] = originalValue;
+	  			}
+				$(this).replaceWith('<td class="' + tdclass + '">' + value + '</td>');
+	  		}
+	  			
+	  	}
+	});
+	updateReservation(reservationData)
+}
 
 //Returns the HTTP GET parameter by the given name, or "" if it does not exist
 function getParameterByName(name) {
@@ -328,7 +522,19 @@ function dateFromTimestamp(timestamp) {
 
 function formatDate(d){
   	var t = new Date(d * 1000);
-	var formatted = $.format.date(t, "MM/dd/yyyy hh:mm a");
+	var formatted = $.format.date(t, "MM/dd/yy hh:mm a");
+	return formatted;
+}
+
+function formatDateOnly(d) {
+  	var t = new Date(d * 1000);
+	var formatted = $.format.date(t, "MM/dd/yy");
+	return formatted;
+}
+
+function formatTimeOnly(d) {
+  	var t = new Date(d * 1000);
+	var formatted = $.format.date(t, "hh:mm a");
 	return formatted;
 }
 
@@ -341,5 +547,9 @@ function formateDateISO(d) {
 function getCSVData(){
  var csv_value=$('#reservations').table2CSV({delivery:'value'});
  $("#csv_text").val(csv_value);	
+}
+
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
 }
 

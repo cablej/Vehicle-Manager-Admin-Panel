@@ -49,7 +49,7 @@ $( document ).ready(function() {
 
 <table id="reservations" class="chart" border="1">
 
-<tr><th>User</th><th>Vehicle</th><th>Start time</th><th>End time</th></tr>
+<tr><th>User</th><th>Vehicle</th><th>Start time</th><th>End time</th><th>Key Set</th><th>Gas Card</th></tr>
 
 </table><br>
 

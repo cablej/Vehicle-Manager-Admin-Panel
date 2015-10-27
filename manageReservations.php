@@ -20,6 +20,9 @@ $( document ).ready(function() {
 	
 	displayCalendar("reservations")
 	
+	getKeySets()
+	getGasCards()
+	
 });
 
 </script>
@@ -40,19 +43,19 @@ $( document ).ready(function() {
 
 <div id='calendar'></div><br><br>
 
-<p id='removeReservation-status'></p>
-
-<table id="reservations" class="chart" border="1">
-
-<tr><th>User</th><th>Vehicle</th><th>Start time</th><th>End time</th><th>Delete</th></tr>
-
-</table><br>
-
 <h3>Manually add a reservation</h3>
 
 <p id='addReservation-status'></p>
 
 <input type="text" id="add-reservation-vehicle-name" placeholder="Vehicle name"><br><br></input><input type="text" id="add-reservation-owner" placeholder="User name"></input><br><br><input type="text" id="add-reservation-start-date" placeholder="Start date and time"></input><br><br><input type="text" id="add-reservation-end-date" placeholder="End date and time"></input><br><br><button style="cursor:pointer" onclick="addReservation($('#add-reservation-vehicle-name').val(), $('#add-reservation-owner').val(), $('#add-reservation-start-date').val(), $('#add-reservation-end-date').val())">Add Reservation</button><br><br>
+
+<p id='removeReservation-status'></p>
+
+<table id="reservations" class="chart" border="1">
+
+<tr><th>User</th><th>Vehicle</th><th>Start time</th><th>End time</th><th>Key Set</th><th>Gas Card</th><th>Edit</th><th>Delete</th></tr>
+
+</table><br>
 
 </div>
 

@@ -20,14 +20,14 @@ $( document ).ready(function() {
 		var json = JSON.parse(data)
 	
 		if(json.length == 0) {
-			$("#requests").append("<tr><td colspan='8'>There aren't any requests.</td></tr>");
+			$("#requests").append("<tr><td colspan='11'>There aren't any requests.</td></tr>");
 		}
 	
 		for(request_index in json) {
 	
 			var request = json[request_index]
 		
-			$("#requests").append("<tr class='request' id='request-" + request["timestamp"] + "'><td>" + request["user"] + "</td><td>" + request["email"] + "</td><td>" + request["vehicleName"] + "</td><td>" + formatDate(request["startDateTime"]) + "</td><td>" + formatDate(request["endDateTime"]) + "</td><td>" + formatDate(request["timestamp"]) + "</td><td><a style='cursor:pointer' onclick=\x22processRequest('" + request["timestamp"] + "', '" + request["user"] + "', '" + request["vehicleName"] + "', 'approve')\x22>Approve</a></td><td><a style='cursor:pointer' onclick=\x22processRequest('" + request["timestamp"] + "', '" + request["user"] + "', '" + request["vehicleName"] + "', 'deny')\x22>Deny</a></td></tr>")
+			$("#requests").append("<tr class='request' id='request-" + request["timestamp"] + "'><td>" + request["user"] + "</td><td>" + request["email"] + "</td><td>" + request["vehicleName"] + "</td><td>" + formatDateOnly(request["startDateTime"]) + "</td><td>" + formatTimeOnly(request["startDateTime"]) + "</td><td>" + formatDateOnly(request["endDateTime"]) + "</td><td>" + formatTimeOnly(request["endDateTime"]) + "</td><td>" + formatDateOnly(request["timestamp"]) + "</td><td>" + formatTimeOnly(request["timestamp"]) + "</td><td><a style='cursor:pointer' onclick=\x22processRequest('" + request["timestamp"] + "', '" + request["user"] + "', '" + request["vehicleName"] + "', 'approve')\x22>Approve</a></td><td><a style='cursor:pointer' onclick=\x22processRequest('" + request["timestamp"] + "', '" + request["user"] + "', '" + request["vehicleName"] + "', 'deny')\x22>Deny</a></td></tr>")
 		}
 		
 	});
@@ -60,7 +60,7 @@ $( document ).ready(function() {
 
 <table id="requests" class="chart" border="1">
 
-<tr><th>Name</th><th>Email</th><th>Vehicle</th><th>Start time</th><th>End time</th><th>Time requested</th><th>Approve</th><th>Deny</th></tr>
+<tr><th>Name</th><th>Email</th><th>Vehicle</th><th>Start date</th><th>Start time</th><th>End date</th><th>End time</th><th>Date requested</th><th>Time requested</th><th>Approve</th><th>Deny</th></tr>
 
 </table><br>
 
